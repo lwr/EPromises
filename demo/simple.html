@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Simple EPromise demo</title>
+  </head>
+  <body>
+    <pre></pre>
+  </body>
+</html>
+
+<!--suppress JSUnresolvedVariable, JSUnresolvedFunction -->
+<script type="text/javascript">
+
+    function log(msg) {
+        document.getElementsByTagName('pre')[0].innerHTML += msg + '\n';
+    }
+
+    (function (scriptElement) {
+        log('Loading ' + (window.Promise ? 'EPromise.min.js' : 'EPromise.all.min.js (bundled with polyfills)'));
+        scriptElement.src = window.Promise ? '../dist/EPromise.min.js' : '../dist/EPromise.all.min.js';
+        scriptElement.onload = function () {
+            log('OK')
+            delete scriptElement.onload;
+            demo();
+        };
+        document.getElementsByTagName('head')[0].appendChild(scriptElement);
+    })(document.createElement('script'));
+
+    function demo() {
+        EPromise.prototype.uncaught = function () {
+            log('Uncaught (in promise): ' + [].join.call(arguments, ', '));
+        };
+
+        [function () {
+            EPromise(function (resolve) { resolve(1, 2, 3) }).then(function () {
+                log('EPromise.new.resolved: ' + [].join.call(arguments, ', '))
+            });
+            EPromise(function (resolve, reject) { reject(1, 2, 3) }).catch(function () {
+                log('EPromise.new.rejected: ' + [].join.call(arguments, ', '))
+            });
+
+        }, function () {
+            EPromise.resolve(1, 2).onRTN(function () {
+                log('EPromise.resolved: ' + [].join.call(arguments, ', '))
+            }).fin(function () {
+                log('state: ' + [].join.call(arguments, ', '))
+            }).then(function () {
+                log('then: ' + [].join.call(arguments, ', '))
+            });
+
+        }, function () {
+            EPromise.reject(3, 4).onERR(function () {
+                log('EPromise.rejected: ' + [].join.call(arguments, ', '))
+            }).fin(function () {
+                log('state: ' + [].join.call(arguments, ', '))
+            }); // finally uncaught
+
+        }, function () {
+            EPromise.when(EPromise.resolve(1, 2), EPromise.resolve(3, 4)).then(function () {
+                log('EPromise.when.resolved: ' + [].join.call(arguments, ', '))
+            });
+
+        }].forEach((f, i) => { setTimeout(function () { log('', f()) }, i * 100) });
+    }
+</script>

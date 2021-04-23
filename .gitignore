@@ -1,0 +1,11 @@
+
+### JetBrains
+.idea
+
+### NodeJS
+node_modules
+package-lock.json
+yarn.lock
+
+### Builds
+dist

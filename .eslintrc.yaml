@@ -1,0 +1,8 @@
+
+---
+root    : true
+extends : "plugin:coremail/standard"
+
+env:
+    browser: true
+    jasmine : true

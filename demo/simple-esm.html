@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Simple EPromise demo</title>
+  </head>
+  <body>
+    <pre></pre>
+  </body>
+</html>
+
+<!--suppress JSCheckFunctionSignatures -->
+<script type="module">
+
+    function log(msg) {
+        document.querySelector('pre').innerHTML += `${msg}<br>`;
+    }
+
+    import EPromise from '../lib/promise.mjs';
+
+    class MyPromise extends EPromise {
+        /** @override */
+        uncaught(...args) {
+            log(`Uncaught (in MyPromise): ${args.join(', ')}`);
+        }
+
+        myExtension() {
+            return this.fin(() => {
+                log(`here the promise is still instance of MyPromise`);
+            });
+        }
+    }
+
+    (function demo() {
+        [() => {
+            new MyPromise(resolve => resolve(1, 2, 3)).then((...args) => {
+                log(`MyPromise.new.resolved: ${args.join(', ')}`)
+            }).myExtension();
+
+        }, () => {
+            new MyPromise((resolve, reject) => reject(1, 2, 3)).catch((...args) => {
+                log(`MyPromise.new.rejected: ${args.join(', ')}`)
+            }).myExtension();
+
+        }, () => {
+            MyPromise.resolve(1, 2).onRTN((...args) => {
+                log(`MyPromise.new.resolved: ${args.join(', ')}`)
+            }).fin((...args) => {
+                log(`state: ${args.join(', ')}`)
+            }).then((...args) => {
+                log(`then: ${args.join(', ')}`)
+            }).myExtension();
+
+        }, () => {
+            MyPromise.reject(3, 4).onERR((...args) => {
+                log(`MyPromise.rejected: ${args.join(', ')}`)
+            }).fin((...args) => {
+                log(`state: ${args.join(', ')}`)
+            }).myExtension(); // finally uncaught
+
+        }, () => {
+            MyPromise.when(MyPromise.resolve(1, 2), MyPromise.resolve(3, 4)).then((...args) => {
+                log(`MyPromise.when.resolved: ${args.join(', ')}`)
+            }).myExtension();
+
+        }].forEach((f, i) => { setTimeout(() => { log('', f()) }, i * 100) });
+    })();
+</script>
