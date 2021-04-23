@@ -18,8 +18,9 @@
 
   "scripts"         : {
     "lint"           : "eslint --ext .js,.mjs .",
-    "prepublishOnly" : "npm run lint && npm t && echo && node build.js",
+    "prepublishOnly" : "npm run lint && npm t && echo && node build.js && echo && npm run test:node:cjs -- -ci",
     "test:node"      : "node test/promise-spec.mjs",
+    "test:node:cjs"  : "node test/promise-spec-cjs",
     "test:unit"      : "karma start",
     "test"           : "npm run test:node && npm run test:unit"
   },
@@ -32,6 +33,7 @@
   ],
 
   "module"          : "lib/promise.mjs",
+  "main"            : "dist/EPromiseCJS.js",
 
   "devDependencies" : {
     "core-js"                  : "3.11.0",
