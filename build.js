@@ -9,7 +9,7 @@ const config = require('./webpack.config');
 // build uncompressed
 webpack({
     ...config,
-    entry        : {'EPromise' : './lib/mainEntry'},
+    entry        : JSON.parse(JSON.stringify(config.entry).replace(/\.min\b/g, '')),
     optimization : {...config.optimization, minimize : false},
 }).run(webpackCallback);
 
@@ -44,8 +44,10 @@ fs.readdirSync('lib', 'utf8').filter(x => /mjs$/.test(x)).forEach(file => {
 function convert(file) {
     const content = fs.readFileSync(`dist/${file}`, 'utf8');
     const cjsFile = file.replace(/^EPromise/, 'EPromiseCJS');
-    fs.writeFileSync(`dist/${file}`, content
-            .replace(/\bself.EPromise\b/, 'EPromise'));
+    if (file === 'EPromise.min.js') {
+        fs.writeFileSync(`dist/${file}`, content
+                .replace(/\bself.EPromise\b/, 'EPromise'));
+    }
     fs.writeFileSync(`dist/${cjsFile}`, content
             .replace(/\bself.EPromise\b/, 'module.exports'));
     console.log(`asset ${cjsFile} ${fs.statSync(`dist/${cjsFile}`).size} bytes [converted to CommonJS]`)

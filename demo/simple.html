@@ -8,34 +8,39 @@
   </body>
 </html>
 
-<!--suppress JSUnresolvedVariable, JSUnresolvedFunction -->
-<script type="text/javascript">
-
+<script>
     function log(msg) {
-        document.getElementsByTagName('pre')[0].innerHTML += msg + '\n';
+        document.getElementsByTagName('pre')[0].innerHTML += msg + '<br>';
     }
 
-    (function (scriptElement) {
-        log('Loading ' + (window.Promise ? 'EPromise.min.js' : 'EPromise.all.min.js (bundled with polyfills)'));
-        scriptElement.src = window.Promise ? '../dist/EPromise.min.js' : '../dist/EPromise.all.min.js';
-        scriptElement.onload = function () {
-            log('OK')
-            delete scriptElement.onload;
-            demo();
-        };
+    log('Loading ' + (window.Promise ? 'EPromise.min.js' : 'EPromise.all.min.js (bundled with polyfills))'));
+</script>
+
+<!--[if IE]>
+<script src="../dist/EPromise.all.min.js"></script>
+<![endif]-->
+
+<!--suppress JSUnresolvedVariable, JSUnresolvedFunction, ES6ConvertVarToLetConst, CommaExpressionJS -->
+<script>
+    window.EPromise ? demo() : (function (scriptElement) {
+        scriptElement.src = '../dist/EPromise' + (window.Promise ? '' : '.all') + '.min.js';
+        scriptElement.onload = demo;
         document.getElementsByTagName('head')[0].appendChild(scriptElement);
     })(document.createElement('script'));
 
     function demo() {
+        log('OK');
+
+        /** @override */
         EPromise.prototype.uncaught = function () {
             log('Uncaught (in promise): ' + [].join.call(arguments, ', '));
         };
 
-        [function () {
+        var tasks = [function () {
             EPromise(function (resolve) { resolve(1, 2, 3) }).then(function () {
                 log('EPromise.new.resolved: ' + [].join.call(arguments, ', '))
             });
-            EPromise(function (resolve, reject) { reject(1, 2, 3) }).catch(function () {
+            EPromise(function (resolve, reject) { reject(1, 2, 3) })['catch'](function () {
                 log('EPromise.new.rejected: ' + [].join.call(arguments, ', '))
             });
 
@@ -59,7 +64,10 @@
             EPromise.when(EPromise.resolve(1, 2), EPromise.resolve(3, 4)).then(function () {
                 log('EPromise.when.resolved: ' + [].join.call(arguments, ', '))
             });
+        }];
 
-        }].forEach((f, i) => { setTimeout(function () { log('', f()) }, i * 100) });
+        for (var i = 0; i < tasks.length; i++) {
+            setTimeout((function () { log(''), this() }).bind(tasks[i]), i * 100);
+        }
     }
 </script>

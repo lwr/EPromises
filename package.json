@@ -25,13 +25,6 @@
     "test"           : "npm run test:node && npm run test:unit"
   },
 
-  "files"           : [
-    "dist",
-    "demo",
-    "lib",
-    "README.md"
-  ],
-
   "module"          : "lib/promise.mjs",
   "main"            : "dist/EPromiseCJS.js",
 

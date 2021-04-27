@@ -30,18 +30,39 @@ function replaceSource(source) {
     }
 }
 
-const toRegExp = s => new RegExp(s.trim().replace(/[?.[\]()]/g, '\\$&').replace(/^\s+/mg, '\\s*'), 'g');
+const toReplace = (pattern, replacement) => [
+    new RegExp(pattern.trim().replace(/.*noinspection.*\n/g, '').replace(/[?.[\]()]/g, '\\$&').replace(/\s+/g, '\\s*'), 'g'),
+    // trimIndent
+    replacement.trim().replace(/^ {8}/mg, ''),
+];
+
+/* global __webpack_require__ */// eslint-disable-line no-unused-vars
+// language=JS
 const replacements = [
-    [toRegExp(`
-    __webpack_require__.r = function(exports) {
-        if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-            Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-        }
-        Object.defineProperty(exports, '__esModule', { value: true });
-    };`), `
-    __webpack_require__.r = function(exports) {
-        // removed by ${name}
-    };`.trim()],
+    // @formatter:off
+    toReplace(`
+        __webpack_require__.d = function (exports, definition) {
+            for (var key in definition) {
+                // noinspection JSUnfilteredForInLoop, JSUnresolvedFunction
+                if (__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+                    // noinspection JSUnfilteredForInLoop
+                    Object.defineProperty(exports, key, { enumerable : true, get : definition[key] });
+                }
+            }
+        };
+    `, `
+        __webpack_require__.d = function (exports, definition) {
+            for (var key in definition) {
+                // noinspection JSUnfilteredForInLoop, JSUnresolvedFunction
+                if (__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+                    // noinspection JSUnfilteredForInLoop
+                    exports[key] = definition[key](); // patched by ${name}
+                }
+            }
+        };
+    `),
+    // @formatter:on
+
     // remove "use strict"
     [/(['"])use\s+strict(['"]);?/gm, ''],
 ];

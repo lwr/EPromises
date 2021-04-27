@@ -35,7 +35,7 @@ A simple promise extension with tuple state and centralized error handling suppo
 
 ## Compatibility
 
-- IE8+ (polyfills required for ES5 browsers)
+- IE8+ (polyfills required for ES7- browsers)
 - NodeJS
 
 ## Limitation
@@ -109,7 +109,7 @@ npm install e-promises
   <!-- src="path/to/EPromise.all.min.js" -->
   <script src="dist/EPromise.all.min.js"></script>
   <!--suppress JSUnresolvedVariable -->
-  <script type="text/javascript">
+  <script>
   EPromise.resolve(); // ...
   </script>
   ```
