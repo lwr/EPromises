@@ -1,7 +1,7 @@
 {
   "name"            : "e-promises",
   "description"     : "A simple promise extension with tuple state and centralized error handling supports",
-  "version"         : "0.9.2",
+  "version"         : "0.9.3",
   "repository"      : {
     "type" : "git",
     "url"  : "https://github.com/lwr/EPromises.git"

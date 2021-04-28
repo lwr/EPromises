@@ -15,7 +15,8 @@
         document.querySelector('pre').innerHTML += `${msg}<br>`;
     }
 
-    import EPromise from '../lib/promise.mjs';
+    // see https://stackoverflow.com/questions/46992463/es6-module-support-in-chrome-62-chrome-canary-64-does-not-work-locally-cors-er
+    import EPromise from 'https://cdn.jsdelivr.net/npm/e-promises@0.9.3/lib/promise.mjs';
 
     class MyPromise extends EPromise {
         /** @override */
