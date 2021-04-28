@@ -4,11 +4,11 @@
 
 import '../lib/polyfill';
 
-import 'core-js/modules/es.string.includes';
-import 'core-js/modules/es.array.reduce';
-import 'core-js/modules/es.symbol';
-import 'core-js/modules/es.set';
-import 'core-js/modules/es.object.entries';
-import 'core-js/modules/es.promise.finally';
+import 'core-js/modules/es6.string.includes';
+import 'core-js/modules/es6.array.reduce';
+import 'core-js/modules/es6.symbol';
+import 'core-js/modules/es6.set';
+import 'core-js/modules/es7.object.entries';
+import 'core-js/modules/es7.promise.finally';
 
 import './promise-spec.mjs';

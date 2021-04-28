@@ -35,7 +35,7 @@ A simple promise extension with tuple state and centralized error handling suppo
 
 ## Compatibility
 
-- IE8+ (polyfills required for ES7- browsers)
+- IE6+ (polyfills required for ES7- browsers)
 - NodeJS
 
 ## Limitation

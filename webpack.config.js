@@ -20,6 +20,9 @@ module.exports = {
                             forceAllTransforms : true,
                             loose              : true,
                             modules            : false, // ES6 modules should be processed only by webpack
+
+                            // see https://github.com/babel/babel/issues/1087#issuecomment-373375175, naming anonymous functions is problematic
+                            exclude : ['@babel/plugin-transform-function-name'],
                         }],
                     ],
                 },
