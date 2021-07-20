@@ -24,14 +24,14 @@ A simple promise extension with tuple state and centralized error handling suppo
       and [NodeJS equivalent](https://nodejs.org/dist/latest-v16.x/docs/api/process.html#process_event_unhandledrejection), read
       this [for more information](https://github.com/domenic/unhandled-rejections-browser-spec)
 
-      Any of these system-wide solutions seems not suitable for apps in most scenario, this extension can take care of this
+      Any of these system-wide solutions seems not suitable for apps in most scenarios, this extension can take care of this
       simpler and lightweight
 
-      Promise rejection will all handled by default `uncaught` (regist in prototype), without any global pollution
+      Promise rejection will all be handled by default `uncaught` (registered in the prototype), without any global pollution
 
 - Other extensions
 
-  such as `onRTN / onERR / fin`, and more extentions can be added easily, [see this example](demo/simple-esm.html)
+  Such as `onRTN / onERR / fin`, and more extensions can be added easily, [see this example](demo/simple-esm.html)
 
 ## Compatibility
 
@@ -50,7 +50,7 @@ A simple promise extension with tuple state and centralized error handling suppo
     try {
         await EPromise.reject(1, 2);
     } catch (e) {
-        console.log(e); // outout 1      
+        console.log(e); // output 1      
     }  
     ```
 
@@ -94,17 +94,16 @@ npm install e-promises
   const EPromise = require('e-promises')
   ```
 
-- esm
+- ESM
 
-  Now nodejs does not support esm module import directly, if you are willing to import the esm version, you have to specify the
-  full file name with extension
+  Now Nodejs does not support ESM module import directly, if you are willing to import the ESM version, you have to specify the full file name with extension
   ```js
   import EPromise from 'e-promises/lib/promise.mjs'
   ```
 
 ### Web browser with no bundler
 
-- Ancient browser (with polyfills)
+- The ancient browser (with polyfills)
   ```html
   <!-- src="path/to/EPromise.all.min.js" -->
   <script src="dist/EPromise.all.min.js"></script>
@@ -115,7 +114,7 @@ npm install e-promises
   ```
   [see this example](demo/simple.html)
 
-  if polyfills are not required (etc. injected in other way), the smallest version `dist/EPromise.min.js` should be used.
+  if polyfills are not required (etc. injected in another way), the smallest version `dist/EPromise.min.js` should be used.
 
 - Modern browser with esm supports
   ```html
